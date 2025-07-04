@@ -26,10 +26,11 @@ def process_csv(csv_file, drop_nulls=True):
 def make_one_fake_voter(voter: str):
     options = ["Blue", "Red", "Green", "Purple", "Yellow"]
     random.shuffle(options)
-    if options[0] == "Blue" and random.random() < 0.75:
-        rest = ["Green", "Purple", "Yellow"]
+    if options[0] in ("Green", "Blue") and random.random() < 0.75:
+        rest = ["Red", "Purple", "Yellow"]
         random.shuffle(rest)
-        options = ["Blue", "Green"] + rest
+        other = "Green" if options[0] == "Blue" else "Blue"
+        options = [options[0], other] + rest
     out = [
         {
             "voter": voter,
@@ -53,14 +54,14 @@ def process_df(df):
     proc_df = df.filter(pl.col("rank").eq(pl.col("rank").min().over(pl.col("voter"))))
     out_df = proc_df.group_by("option").agg(pl.col("voter").count()).sort("voter")
     # print(out_df)
-    cleaned_df = df.remove(
-        pl.col("option").eq(
-            out_df.item(
-                0,
-                0,
-            )
+    to_remove = pl.col("option").eq(
+        out_df.item(
+            0,
+            0,
         )
     )
+    print(f"removing {to_remove}")
+    cleaned_df = df.remove(to_remove)
     return cleaned_df, proc_df, out_df
 
 
@@ -116,5 +117,5 @@ def ranked_pairs(df):
         "winner",
         [node for node in mynetwork.nodes if mynetwork.in_degree(node) == 0][0],
     )
-    nx.draw_networkx(mynetwork)
+    nx.draw_networkx(mynetwork, pos=nx.circular_layout(mynetwork))
     return mynetwork
