@@ -22,7 +22,7 @@ server = app.server
 
 app.layout = html.Div(
     [
-        html.H1("Ranked Choice Voting Analyzer"),
+        html.H1("Ranked Choice Computations"),
         html.Div(
             [
                 html.H3("Paste Data Here:"),
@@ -30,7 +30,7 @@ app.layout = html.Div(
                     id="text-input",
                     value="",
                     style={"width": "100%", "height": 300},
-                    placeholder='Paste your data here. First column should be "Name" (voter), subsequent columns are options with ranks.',
+                    placeholder='Paste your data here. Expects Tab-delimated data pasted from Excel.',
                     persistence=True,
                     persistence_type="session",
                 ),
