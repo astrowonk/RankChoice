@@ -30,7 +30,7 @@ app.layout = html.Div(
                     id="text-input",
                     value="",
                     style={"width": "100%", "height": 300},
-                    placeholder='Paste your data here. Expects Tab-delimated data pasted from Excel.',
+                    placeholder="Paste your data here. Expects Tab-delimated data pasted from Excel.",
                     persistence=True,
                     persistence_type="session",
                 ),
