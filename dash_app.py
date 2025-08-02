@@ -9,8 +9,15 @@ import dash_dataframe_table
 import dash_bootstrap_components as dbc
 from contextlib import redirect_stdout
 
+from pathlib import Path
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+parent_dir = Path().absolute().stem
+
+app = dash.Dash(
+    __name__,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    url_base_pathname=f"/dash/{parent_dir}/",
+)
 server = app.server
 
 app.layout = html.Div(
